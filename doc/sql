@@ -1,0 +1,17 @@
+drop table if exists portfolios;
+create table portfolios (portfolio_id integer not null primary key AUTO_INCREMENT,users_id Integer not null,name text not null, career text not null,uuid text not null);
+drop table if exists products;
+create table products (product_id Integer not null primary key AUTO_INCREMENT,portfolios_id Integer not null,product_name text not null,product_period text not null,product_content text not null, tool text not null);
+drop table if exists mail_authentications;
+create table mail_authentications(authentication_id integer not null primary key AUTO_INCREMENT,uuid text not null,user_name text not null,password text not null,mail_address text not null, birthday integer not null, date timestamp not null, status integer not null);
+drop table if exists users;
+create table users(users_id integer not null primary key AUTO_INCREMENT,user_name text not null, password text not null,mail_address text not null,birthday integer not null);
+
+
+INSERT INTO portfolios(users_id,name,career,product_id) VALUES(1,'山田洋輔','1992年〇\n1993年〇',1);
+INSERT INTO products(product_name,product_period,product_content,tool) VALUES('ポートフォリオ作成アプリ開発','3ヶ月','DB設計、環境構築、実装、テスト','Vue.js,Spring Boot');
+
+
+
+ALTER TABLE portfolios CHANGE portfolio_id portfolio_id Integer not null AUTO_INCREMENT;
+ALTER TABLE products CHANGE product_id product_id Integer not null AUTO_INCREMENT;

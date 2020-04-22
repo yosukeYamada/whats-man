@@ -1,0 +1,6 @@
+①ユーザ認証後に同じパスを叩くと認証成功の文字が出る。
+⇒registerUserメソッドのchechInsertがfalseにならない
+原因：selectの結果がnot emptyでもエラーにならないので・・・
+現状：未解決
+
+➁

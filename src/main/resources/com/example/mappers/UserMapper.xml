@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mappers.UserMapper">
+	<resultMap type="com.example.domain.User" id="UserResultMap">
+		<id property="userId" column="users_id" />
+		<result property="userName" column="user_name" />
+		<result property="password" column="password" />
+		<result property="mailAddress" column="mail_address" />
+		<result property="birthday" column="birthday" />
+		<collection property="portfolioList" column="users_id"
+			javaType="ArrayList" select="findByUserId">
+			<!-- <result property="uuid" column="uuid"/> -->
+		</collection>
+	</resultMap>
+
+	<resultMap type="com.example.domain.Portfolio"
+		id="PortfolioResultMap">
+		<id property="portfolioId" column="portfolio_id" />
+		<result property="userId" column="users_id" />
+		<result property="name" column="name" />
+		<result property="career" column="career" />
+		<result property="uuid" column="uuid" />
+	</resultMap>
+	<select id="findByUserId" resultMap="PortfolioResultMap">
+		SELECT
+		portfolio_id,users_id,name, career, uuid
+		from portfolios
+		WHERE users_id=#{userId}
+	</select>
+
+	<select id="findAll" resultMap="UserResultMap">
+		SELECT * FROM users
+	</select>
+	<select id="load" parameterType="String"
+		resultMap="UserResultMap">
+		SELECT * from users WHERE user_name = #{userName}
+	</select>
+	<select id="findByUserNameAndMailAddress"
+		resultMap="UserResultMap">
+		SELECT users_id,user_name,password,mail_address,birthday
+		from users WHERE user_name = #{userName} AND mail_address =
+		#{mailAddress}
+	</select>
+	<select id="findByUserNameAndPassword" resultMap="UserResultMap">
+		SELECT
+		users_id,user_name,mail_address,birthday from users 
+		WHERE user_name =#{userName} AND password = #{password}
+	</select>
+	<insert id="registerUser" parameterType="String">
+		INSERT INTO users
+		(user_name,password,mail_address,birthday) SELECT
+		user_name,password,mail_address,birthday from mail_authentications
+		WHERE uuid = #{uuid} and status = 0
+	</insert>
+	<update id="changeStatus" parameterType="String">
+		UPDATE mail_authentications
+		set
+		status = 1
+		WHERE uuid=#{uuid}
+	</update>
+
+</mapper>

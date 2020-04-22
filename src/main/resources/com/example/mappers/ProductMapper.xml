@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mappers.ProductMapper">
+	<resultMap type="com.example.domain.MailAuthentication"
+		id="ProductMap">
+		<result property="productId" column="product_id" />
+		<result property="portfolioId" column="portfolios_id"/>
+		<result property="productName" column="product_name" />
+		<result property="productPeriod" column="product_period" />
+		<result property="productContent" column="product_content" />
+		<result property="tool" column="tool" />
+	</resultMap>
+	<insert id="insert" parameterType="com.example.domain.Product">
+		INSERT INTO
+		products(portfolios_id,product_name,product_period,product_content,tool)
+		VALUES(#{portfolioId},#{productName},#{productPeriod},#{productContent},#{tool});
+	</insert>
+	<select id="findByProductId" resultMap="ProductMap">
+		SELECT
+		product_id,portfolios_id,product_name,product_period,product_content,tool
+		FROM products
+		WHERE product_id=#{productId}
+	</select>
+	<select id="lastInsertId" resultType="Integer">
+		SELECT LAST_INSERT_ID();
+	</select>
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mappers.PortfolioMapper">
+	<resultMap type="com.example.domain.Portfolio"
+		id="PortfolioMap">
+		<id property="portfolioId" column="portfolio_id" />
+		<result property="userId" column="users_id" />
+		<result property="name" column="name" />
+		<result property="career" column="career" />
+		<result property="uuid" column="uuid" />
+		<collection property="productList" column="portfolio_id"
+			javaType="ArrayList" select="findByPortfolioId">
+<!-- 			<result property="productId" column="product_id" /> -->
+		</collection>
+	</resultMap>
+
+	<resultMap type="com.example.domain.Product" id="ProductMap">
+		<id property="productId" column="product_id" />
+		<result property="productName" column="product_name" />
+		<result property="productPeriod" column="product_period" />
+		<result property="productContent" column="product_content" />
+		<result property="tool" column="tool" />
+	</resultMap>
+	<insert id="insert" parameterType="com.example.domain.Portfolio">
+		INSERT INTO
+		portfolios(users_id,name,career,uuid)
+		VALUES(#{userId},#{name},#{career},#{uuid})
+	</insert>
+	<select id="findByUserId" resultMap="PortfolioMap">
+		SELECT
+		portfolio_id,users_id,name, career, uuid,product_id from portfolios 
+		WHERE users_id = #{userId}
+	</select>
+	<select id="findByUuid" resultMap="PortfolioMap">
+		SELECT
+		portfolio_id,users_id,name,career,uuid 
+		from portfolios
+		WHERE uuid = #{uuid}
+	</select>
+	<select id="findByPortfolioId" resultMap="ProductMap">
+		SELECT
+		product_id,product_name,product_period,product_content,tool,portfolios_id
+		from products
+		WHERE portfolios_id = #{portfolioId}
+	</select>
+	<select id="lastInsertId" resultType="Integer">
+		SELECT LAST_INSERT_ID();
+	</select>
+
+
+
+
+</mapper>
